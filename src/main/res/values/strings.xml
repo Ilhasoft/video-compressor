@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">VideoEditor</string>
+
+    <!--edit video view-->
+    <string name="EditVideo">Edit Video</string>
+    <string name="OriginalVideo">Original Video</string>
+    <string name="EditedVideo">Edited Video</string>
+    <string name="SendingVideo">Sending video...</string>
+    <string name="CompressVideo">Compress Video</string>
+
+</resources>
