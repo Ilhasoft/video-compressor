@@ -66,7 +66,7 @@ int isSemiPlanarYUV(int colorFormat) {
     }
 }
 
-JNIEXPORT int com_example_khalsa_video_MediaController_convertVideoFrame(JNIEnv *env, jclass class, jobject src, jobject dest, int destFormat, int width, int height, int padding, int swap) {
+JNIEXPORT int Java_br_com_ilhasoft_videoeditor_MediaController_convertVideoFrame(JNIEnv *env, jobject src, jobject dest, int destFormat, int width, int height, int padding, int swap) {
     if (!src || !dest || !destFormat) {
         return 0;
     }
