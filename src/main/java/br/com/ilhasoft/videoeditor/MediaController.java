@@ -69,8 +69,6 @@ public class MediaController {
         }
     }
 
-    public native static int convertVideoFrame(ByteBuffer src, ByteBuffer dest, int destFormat, int width, int height, int padding, int swap);
-
     private void didWriteData(final boolean last, final boolean error) {
         final boolean firstWrite = videoConvertFirstWrite;
         if (firstWrite) {
@@ -220,6 +218,7 @@ public class MediaController {
 
     @TargetApi(16)
     public boolean convertVideo(final String path, final String newPath) {
+        if(Build.VERSION.SDK_INT < 18) return false;
 
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(path);
@@ -233,7 +232,7 @@ public class MediaController {
         int resultWidth = 640;
         int resultHeight = 360;
 
-        int rotationValue = Integer.valueOf(rotation);
+        int rotationValue = rotation != null ? Integer.valueOf(rotation) : 90;
         int originalWidth = Integer.valueOf(width);
         int originalHeight = Integer.valueOf(height);
 
@@ -569,18 +568,6 @@ public class MediaController {
                                                         outputSurface.drawImage(false);
                                                         inputSurface.setPresentationTime(info.presentationTimeUs * 1000);
                                                         inputSurface.swapBuffers();
-                                                    } else {
-                                                        int inputBufIndex = encoder.dequeueInputBuffer(TIMEOUT_USEC);
-                                                        if (inputBufIndex >= 0) {
-                                                            outputSurface.drawImage(true);
-                                                            ByteBuffer rgbBuf = outputSurface.getFrame();
-                                                            ByteBuffer yuvBuf = encoderInputBuffers[inputBufIndex];
-                                                            yuvBuf.clear();
-                                                            convertVideoFrame(rgbBuf, yuvBuf, colorFormat, resultWidth, resultHeight, padding, swapUV);
-                                                            encoder.queueInputBuffer(inputBufIndex, 0, bufferSize, info.presentationTimeUs, 0);
-                                                        } else {
-                                                            Log.e("tmessages", "input buffer not available");
-                                                        }
                                                     }
                                                 }
                                             }
